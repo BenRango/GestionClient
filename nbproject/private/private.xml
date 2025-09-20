@@ -4,6 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/srang/OneDrive/Documentos/NetBeansProjects/GestionClient/web/Users.jsp</file>
+            <file>file:/C:/Users/srang/OneDrive/Documentos/NetBeansProjects/GestionClient/src/java/database/DatabaseConnection.java</file>
+            <file>file:/C:/Users/srang/OneDrive/Documentos/NetBeansProjects/GestionClient/src/java/first_package/Class1.java</file>
+            <file>file:/C:/Users/srang/OneDrive/Documentos/NetBeansProjects/GestionClient/src/java/first_package/ClientDAO.java</file>
+            <file>file:/C:/Users/srang/OneDrive/Documentos/NetBeansProjects/GestionClient/src/java/database/model/Client.java</file>
+            <file>file:/C:/Users/srang/OneDrive/Documentos/NetBeansProjects/GestionClient/nbproject/build-impl.xml</file>
         </group>
     </open-files>
 </project-private>

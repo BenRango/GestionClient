@@ -503,245 +503,29 @@
       font-weight: 600;
     }
 
-    /* Landing page styles */
-    .landing-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-      min-height: 80vh;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .hero-content {
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-    }
-
-    .hero-icon {
-      width: 100px;
-      height: 100px;
-      background: var(--accent);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 40px;
-      color: white;
-      margin-bottom: 10px;
-      animation: heartbeat 2s ease-in-out infinite;
-    }
-
-    @keyframes heartbeat {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-
-    .hero-title {
-      font-size: 3.5rem;
-      font-weight: 800;
-      line-height: 1.1;
-      margin: 0;
-    }
-
-    .hero-title-line {
-      display: block;
-      font-size: 1.2rem;
-      font-weight: 400;
-      color: var(--text-muted);
-      margin-bottom: 10px;
-    }
-
-    .hero-title-main {
-      background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      display: block;
-    }
-
-    .hero-subtitle {
-      font-size: 1.3rem;
-      color: var(--text-secondary);
-      line-height: 1.6;
-      max-width: 500px;
-    }
-
-    .hero-features {
-      display: flex;
-      gap: 30px;
-      flex-wrap: wrap;
-    }
-
-    .feature-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--text-secondary);
-      font-weight: 500;
-    }
-
-    .feature-item i {
-      color: #38ef7d;
-      font-size: 18px;
-    }
-
-    .hero-cta {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .cta-button {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 18px 32px;
-      border-radius: 50px;
-      font-size: 16px;
-      font-weight: 600;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.4s ease;
-      border: none;
-      font-family: inherit;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .cta-button.primary {
+    /* Toggle between form and opinions */
+    .view-toggle {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
       background: var(--primary);
       color: white;
+      border: none;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
       box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      z-index: 1000;
     }
 
-    .cta-button.primary::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-      transition: left 0.5s ease;
-    }
-
-    .cta-button.primary:hover::before {
-      left: 100%;
-    }
-
-    .cta-button.primary:hover {
-      transform: translateY(-3px);
+    .view-toggle:hover {
+      transform: scale(1.1);
       box-shadow: var(--shadow-hover);
     }
 
-    .cta-button.secondary {
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--text-primary);
-      border: 1px solid var(--border);
-      backdrop-filter: blur(20px);
-    }
-
-    .cta-button.secondary:hover {
-      background: rgba(255, 255, 255, 0.15);
-      transform: translateY(-2px);
-    }
-
-    .stats-container {
-      display: flex;
-      gap: 40px;
-      margin-top: 20px;
-    }
-
-    .stat-item {
-      text-align: center;
-    }
-
-    .stat-number {
-      font-size: 2.5rem;
-      font-weight: 800;
-      background: var(--accent);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .stat-label {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    .hero-visual {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 500px;
-    }
-
-    .hero-circle {
-      width: 400px;
-      height: 400px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.05) 100%);
-      border: 2px solid rgba(102, 126, 234, 0.2);
-      position: relative;
-      animation: rotate 20s linear infinite;
-    }
-
-    @keyframes rotate {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .floating-cards {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-    }
-
-    .floating-card {
-      position: absolute;
-      background: var(--bg-glass);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--text-primary);
-      font-weight: 500;
-      box-shadow: var(--shadow);
-      animation: float 4s ease-in-out infinite;
-    }
-
-    .floating-card i {
-      color: #38ef7d;
-    }
-
-    .card-1 {
-      top: 20%;
-      left: 10%;
-      animation-delay: 0s;
-    }
-
-    .card-2 {
-      top: 50%;
-      right: 5%;
-      animation-delay: 1.5s;
-    }
-
-    .card-3 {
-      bottom: 20%;
-      left: 15%;
-      animation-delay: 3s;
-    }
-
-    /* Toggle between form and opinions */
     .view-section {
       display: none;
     }
@@ -780,60 +564,15 @@
         transform: none;
         margin: 20px auto;
       }
-
-      /* Landing responsive */
-      .landing-container {
-        grid-template-columns: 1fr;
-        gap: 40px;
-        text-align: center;
-      }
-
-      .hero-title {
-        font-size: 2.5rem;
-      }
-
-      .hero-subtitle {
-        font-size: 1.1rem;
-      }
-
-      .hero-features {
-        justify-content: center;
-        gap: 20px;
-      }
-
-      .hero-cta {
-        justify-content: center;
-      }
-
-      .stats-container {
-        justify-content: center;
-        gap: 30px;
-      }
-
-      .hero-circle {
-        width: 300px;
-        height: 300px;
-      }
-
-      .floating-card {
-        font-size: 0.9rem;
-        padding: 12px 16px;
-      }
     }
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <!-- Floating particles -->
-  <div class="particles"></div>
+    <div class="particles"></div>
 
-  <!-- Navigation -->
-  <nav class="nav">
-    <button class="nav-item active" onclick="showView('home')">
-      <i class="fas fa-home"></i>
-      Accueil
-    </button>
-    <button class="nav-item" onclick="showView('form')">
+    <nav class="nav">
+    <button class="nav-item active" onclick="showView('form')">
       <i class="fas fa-edit"></i>
       Nouvel Avis
     </button>
@@ -843,87 +582,7 @@
     </button>
   </nav>
 
-  <!-- Home/Landing View -->
-  <div id="home-view" class="view-section active">
-    <div class="container">
-      <div class="landing-container">
-        <div class="hero-content">
-          <div class="hero-icon">
-            <i class="fas fa-heart"></i>
-          </div>
-          <h1 class="hero-title">
-            <span class="hero-title-line">Bienvenue chez</span>
-            <span class="hero-title-main">FeedbackPro</span>
-          </h1>
-          <p class="hero-subtitle">
-            Votre opinion compte ! Partagez votre expérience et aidez-nous à améliorer nos services pour mieux vous servir.
-          </p>
-          
-          <div class="hero-features">
-            <div class="feature-item">
-              <i class="fas fa-star"></i>
-              <span>Évaluation rapide</span>
-            </div>
-            <div class="feature-item">
-              <i class="fas fa-comments"></i>
-              <span>Commentaires détaillés</span>
-            </div>
-            <div class="feature-item">
-              <i class="fas fa-shield-alt"></i>
-              <span>100% confidentiel</span>
-            </div>
-          </div>
-
-          <div class="hero-cta">
-            <a href="Acceuil.jsp" class="cta-button primary">
-              <span class="cta-text">Donner mon avis</span>
-              <i class="fas fa-arrow-right"></i>
-            </a>
-            <button onclick="showView('opinions')" class="cta-button secondary">
-              <span class="cta-text">Voir les avis</span>
-              <i class="fas fa-eye"></i>
-            </button>
-          </div>
-
-          <div class="stats-container">
-            <div class="stat-item">
-              <div class="stat-number">1,247</div>
-              <div class="stat-label">Avis collectés</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-number">4.8/5</div>
-              <div class="stat-label">Note moyenne</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-number">98%</div>
-              <div class="stat-label">Satisfaction client</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="hero-visual">
-          <div class="floating-cards">
-            <div class="floating-card card-1">
-              <i class="fas fa-star"></i>
-              <span>Excellent service !</span>
-            </div>
-            <div class="floating-card card-2">
-              <i class="fas fa-thumbs-up"></i>
-              <span>Je recommande</span>
-            </div>
-            <div class="floating-card card-3">
-              <i class="fas fa-heart"></i>
-              <span>Équipe géniale</span>
-            </div>
-          </div>
-          <div class="hero-circle"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Form View -->
-  <div id="form-view" class="view-section">
+    <div id="form-view" class="view-section active">
     <div class="container">
       <div class="form-container">
         <div class="form-card">
@@ -931,22 +590,13 @@
             <div class="form-icon">
               <i class="fas fa-star"></i>
             </div>
-            <h1 class="form-title">Partagez votre expérience</h1>
-            <p class="form-subtitle">Votre avis nous aide à améliorer nos services</p>
+            <h1 class="form-title">Partagez votre exp rience</h1>
+            <p class="form-subtitle">Votre avis nous aide   am liorer nos services</p>
           </div>
 
-          <form action="reviews" method="post">
-            <div class="form-group">
-              <label class="form-label" for="contact">Contact</label>
-              <input 
-                type="text" 
-                id="contact" 
-                name="contact" 
-                class="form-input" 
-                placeholder="Votre email ou téléphone"
-                required
-              >
-            </div>
+          <form action="reviews?user_id=1" method="post" id="review-form">
+             <input type="hidden" id="user_id" name="user_id" value="1">
+              <input type="hidden" id="dateVisite" name="dateVisite">
 
             <div class="form-group">
               <label class="form-label">Niveau de satisfaction</label>
@@ -1008,18 +658,16 @@
     </div>
   </div>
 
-  <!-- Opinions View -->
-  <div id="opinions-view" class="view-section">
+    <div id="opinions-view" class="view-section">
     <div class="container">
       <div class="opinions-container">
         <div class="opinions-header">
           <h1 class="opinions-title">Avis Clients</h1>
-          <p class="opinions-subtitle">Découvrez les retours de notre communauté</p>
+          <p class="opinions-subtitle">D couvrez les retours de notre communaut </p>
         </div>
 
         <div class="opinions-grid" id="opinions-grid">
-          <!-- Sample opinion cards (replace with JSP logic) -->
-          <div class="opinion-card">
+                    <div class="opinion-card">
             <div class="opinion-header">
               <div class="opinion-avatar">JD</div>
               <div class="opinion-info">
@@ -1040,12 +688,12 @@
             
             <div class="opinion-field">
               <span class="opinion-field-label">Raison</span>
-              <span class="opinion-field-value">Réponse rapide et efficace</span>
+              <span class="opinion-field-value">R ponse rapide et efficace</span>
             </div>
             
             <div class="opinion-field">
               <span class="opinion-field-label">Commentaire</span>
-              <span class="opinion-field-value">Excellent service, équipe très professionnelle et à l'écoute. Je recommande vivement !</span>
+              <span class="opinion-field-value">Excellent service,  quipe tr s professionnelle et   l' coute. Je recommande vivement !</span>
             </div>
           </div>
 
@@ -1070,12 +718,12 @@
             
             <div class="opinion-field">
               <span class="opinion-field-label">Raison</span>
-              <span class="opinion-field-value">Délai de livraison trop long</span>
+              <span class="opinion-field-value">D lai de livraison trop long</span>
             </div>
             
             <div class="opinion-field">
               <span class="opinion-field-label">Commentaire</span>
-              <span class="opinion-field-value">Commande passée il y a une semaine, toujours pas reçue. Communication insuffisante sur les délais.</span>
+              <span class="opinion-field-value">Commande pass e il y a une semaine, toujours pas re ue. Communication insuffisante sur les d lais.</span>
             </div>
           </div>
 
@@ -1105,7 +753,7 @@
             
             <div class="opinion-field">
               <span class="opinion-field-label">Commentaire</span>
-              <span class="opinion-field-value">Très satisfait de mon achat. Qualité au rendez-vous et prix compétitif.</span>
+              <span class="opinion-field-value">Tr s satisfait de mon achat. Qualit  au rendez-vous et prix comp titif.</span>
             </div>
           </div>
         </div>
@@ -1130,13 +778,11 @@
 
     // View switching
     function showView(view) {
-      const homeView = document.getElementById('home-view');
       const formView = document.getElementById('form-view');
       const opinionsView = document.getElementById('opinions-view');
       const navItems = document.querySelectorAll('.nav-item');
 
       // Hide all views
-      homeView.classList.remove('active');
       formView.classList.remove('active');
       opinionsView.classList.remove('active');
 
@@ -1144,21 +790,26 @@
       navItems.forEach(item => item.classList.remove('active'));
 
       // Show selected view
-      if (view === 'home') {
-        homeView.classList.add('active');
-        navItems[0].classList.add('active');
-      } else if (view === 'form') {
+      if (view === 'form') {
         formView.classList.add('active');
-        navItems[1].classList.add('active');
+        navItems[0].classList.add('active');
       } else {
         opinionsView.classList.add('active');
-        navItems[2].classList.add('active');
+        navItems[1].classList.add('active');
       }
     }
 
     // Form enhancements
     document.addEventListener('DOMContentLoaded', function() {
       createParticles();
+
+      // Set the current date for the hidden input field
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months start at 0
+      const dd = String(today.getDate()).padStart(2, '0');
+      const formattedDate = `${yyyy}-${mm}-${dd}`;
+      document.getElementById('dateVisite').value = formattedDate;
 
       // Add focus effects to inputs
       const inputs = document.querySelectorAll('.form-input');
@@ -1227,6 +878,31 @@
         }, 150);
       });
     });
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('review-form');
+      form.addEventListener('submit', function(event) {
+        // Empêche la soumission par défaut du formulaire
+        event.preventDefault();
+
+        // Récupère la valeur de user_id
+        const userId = document.getElementById('user_id').value;
+
+        alert(userId)
+
+        // Récupère l'URL de base du formulaire
+        const actionUrl = form.getAttribute('action');
+
+        // Construit la nouvelle URL avec la chaîne de requête
+        const newActionUrl = `${actionUrl}?user_id=${userId}`;
+
+        // Met à jour l'attribut 'action' du formulaire
+        form.action = newActionUrl;
+
+        // Soumet le formulaire avec la nouvelle URL
+        form.submit();
+      });
+    });
   </script>
+  
 </body>
 </html>

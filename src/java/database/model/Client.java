@@ -4,6 +4,9 @@
  */
 package database.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author srang
@@ -13,7 +16,11 @@ public class Client {
     private String first_name;
     private String last_name;
     private String Contact;
-
+    private final List<String> reviews;
+    
+    public Client() {
+        this.reviews = new ArrayList<>(); 
+    }
     public String getFirstName() {
         return first_name;
     }
@@ -25,6 +32,9 @@ public class Client {
     public String getContact() {
         return Contact;
     }
+    public List<String> getReviews() {
+        return reviews;
+    }
 
     public void setId(int id) {
         this.ID = id;
@@ -35,10 +45,13 @@ public class Client {
     }
 
     public void setFirstName(String prenom) {
-        this.last_name = prenom;
+        this.first_name = prenom;
     }
 
     public void setContact(String numero) {
         this.Contact = numero;
+    }  
+    public void addRevews(String review) {
+        this.reviews.add(review);
     }  
 }

@@ -595,7 +595,7 @@
             <p class="form-subtitle">Votre avis nous aide   am liorer nos services</p>
           </div>
 
-          <form action="reviews" method="post" id="review-form">
+          <form action="reviews55" method="post" id="review-form">
                         <input type="hidden" id="user_id" name="user_id" value="1">
             <input type="hidden" id="dateVisite" name="dateVisite">
 
@@ -627,7 +627,7 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="commentaire">Commentaire d taill </label>
+              <label class="form-label" for="commentaire">Commentaire d�taill� </label>
               <textarea 
                 id="commentaire" 
                 name="commentaire" 
@@ -636,15 +636,36 @@
                 rows="4"
               ></textarea>
             </div>
-
             <div class="form-group">
-              <label class="form-label" for="service">Service concern </label>
+              <label class="form-label" for="service">Service concern� </label>
               <input 
                 type="text" 
                 id="service" 
                 name="service" 
                 class="form-input" 
                 placeholder="Ex: Vente, Support, Livraison..."
+                required
+              >
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="phone">Num�ro de t�l�phone </label>
+              <input 
+                type="text" 
+                id="phone" 
+                name="phone" 
+                class="form-input" 
+                placeholder="Ex: 0123456789"
+                required
+              >
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="nom">Nom</label>
+              <input 
+                type="text" 
+                id="nom" 
+                name="nom" 
+                class="form-input" 
+                placeholder="Votre nom..."
                 required
               >
             </div>
@@ -659,120 +680,82 @@
     </div>
   </div>
   </div>
-
-  <script>
-    // Generate floating particles
-    function createParticles() {
-      const particles = document.querySelector('.particles');
-      for (let i = 0; i < 50; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 6 + 's';
-        particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
-        particles.appendChild(particle);
-      }
-    }
-
-    // View switching
-    function showView(view) {
-      const formView = document.getElementById('form-view');
-      const opinionsView = document.getElementById('opinions-view');
-      const navItems = document.querySelectorAll('.nav-item');
-
-      // Hide all views
-      formView.classList.remove('active');
-      opinionsView.classList.remove('active');
-
-      // Remove active from nav items
-      navItems.forEach(item => item.classList.remove('active'));
-
-      // Show selected view
-      if (view === 'form') {
-        formView.classList.add('active');
-        navItems[0].classList.add('active');
-      } else {
-        opinionsView.classList.add('active');
-        navItems[1].classList.add('active');
-      }
-    }
-
-    // Form enhancements
+  <script> 
     document.addEventListener('DOMContentLoaded', function() {
-      createParticles();
+      const form = document.getElementById('review-form');
 
-      // Set the current date for the hidden input field
-      document.getElementById('dateVisite').value = new Date().toISOString().split('T')[0];
+      // 👉 Initialiser la date de visite directement dans l'input caché
+      const dateInput = document.getElementById('dateVisite');
+      dateInput.value = new Date().toISOString().split('T')[0];
 
-
-      // Add focus effects to inputs
-      const inputs = document.querySelectorAll('.form-input');
-      inputs.forEach(input => {
-        input.addEventListener('focus', function() {
-          this.parentElement.style.transform = 'translateY(-2px)';
-        });
-
-        input.addEventListener('blur', function() {
-          this.parentElement.style.transform = 'translateY(0)';
-        });
-      });
-
-      // Add submit animation
-      const submitBtn = document.querySelector('.submit-btn');
-      const form = document.querySelector('form');
-      
       if (form) {
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', async function(e) {
+          e.preventDefault();
+
+          const submitBtn = document.querySelector('.submit-btn');
           submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
           submitBtn.disabled = true;
-        });
-      }
 
-      // Add staggered animation to opinion cards
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      };
+          try {
+            const formData = new FormData(form);
 
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => {
-              entry.target.style.animationPlayState = 'running';
-            }, index * 100);
+            // 1️⃣ POST -> /users
+            const userFormData = new FormData();
+            userFormData.append('nom', formData.get('nom'));
+            userFormData.append('phone', formData.get('phone'));
+
+            console.log("Données envoyées à /users :", Object.fromEntries(userFormData));
+
+            const userResponse = await fetch('users', {
+              method: 'POST',
+              body: userFormData
+            });
+
+            if (!userResponse.ok) {
+              const errorText = await userResponse.text();
+              throw new Error(`Erreur lors de l'enregistrement de l'utilisateur: ${userResponse.status} - ${errorText}`);
+            }
+
+            const userData = await userResponse.json();
+
+            if (userData.id) {
+              document.getElementById('user_id').value = userData.id;
+            }
+
+            // 2️⃣ POST -> /reviews
+            const reviewFormData = new FormData(form);
+            reviewFormData.delete('nom');
+            reviewFormData.delete('phone');
+
+            console.log("Données envoyées à /reviews :", Object.fromEntries(reviewFormData));
+
+            const reviewResponse = await fetch('reviews', {
+              method: 'POST',
+              body: reviewFormData
+            });
+
+            if (!reviewResponse.ok) {
+              const errorText = await reviewResponse.text();
+              throw new Error(`Erreur lors de l'enregistrement de la review: ${reviewResponse.status} - ${errorText}`);
+            }
+
+            alert("Avis envoyé avec succès !");
+            form.reset();
+
+            // Réinitialiser la date après reset
+            dateInput.value = new Date().toISOString().split('T')[0];
+          } catch (err) {
+            console.error(err);
+            alert("Une erreur est survenue : " + err.message);
+          } finally {
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right: 8px;"></i> Envoyer mon avis';
+            submitBtn.disabled = false;
           }
         });
-      }, observerOptions);
-
-      document.querySelectorAll('.opinion-card').forEach(card => {
-        observer.observe(card);
-      });
-    });
-
-    // Add typing effect for form title
-    function typeWriter(element, text, speed = 50) {
-      let i = 0;
-      element.innerHTML = '';
-      function type() {
-        if (i < text.length) {
-          element.innerHTML += text.charAt(i);
-          i++;
-          setTimeout(type, speed);
-        }
       }
-      type();
-    }
-
-    // Smooth scroll for navigation
-    document.querySelectorAll('.nav-item').forEach(item => {
-      item.addEventListener('click', function() {
-        this.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-          this.style.transform = '';
-        }, 150);
-      });
     });
   </script>
+
+
 </body>
 </html>

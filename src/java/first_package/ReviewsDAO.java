@@ -25,7 +25,9 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
+import javax.servlet.annotation.MultipartConfig;
 
+@MultipartConfig
 @WebServlet(name = "ReviewsDAO", urlPatterns = {"/reviews"})
 public class ReviewsDAO extends HttpServlet {
 

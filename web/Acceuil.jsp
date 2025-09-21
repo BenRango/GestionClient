@@ -627,7 +627,7 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="commentaire">Commentaire d taill </label>
+              <label class="form-label" for="commentaire">Commentaire détaillé </label>
               <textarea 
                 id="commentaire" 
                 name="commentaire" 
@@ -636,15 +636,36 @@
                 rows="4"
               ></textarea>
             </div>
-
             <div class="form-group">
-              <label class="form-label" for="service">Service concern </label>
+              <label class="form-label" for="service">Service concerné </label>
               <input 
                 type="text" 
                 id="service" 
                 name="service" 
                 class="form-input" 
                 placeholder="Ex: Vente, Support, Livraison..."
+                required
+              >
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="phone">Numéro de téléphone </label>
+              <input 
+                type="text" 
+                id="phone" 
+                name="phone" 
+                class="form-input" 
+                placeholder="Ex: 0123456789"
+                required
+              >
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="nom">Nom</label>
+              <input 
+                type="text" 
+                id="nom" 
+                name="nom" 
+                class="form-input" 
+                placeholder="Votre nom..."
                 required
               >
             </div>
@@ -660,119 +681,78 @@
   </div>
   </div>
 
-  <script>
-    // Generate floating particles
-    function createParticles() {
-      const particles = document.querySelector('.particles');
-      for (let i = 0; i < 50; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 6 + 's';
-        particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
-        particles.appendChild(particle);
-      }
+    if (form) {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Récupérer le bouton de soumission pour le feedback visuel
+            const submitBtn = document.querySelector('.submit-btn');
+
+            // Préparer le feedback visuel
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
+            submitBtn.disabled = true;
+
+            try {
+                // Récupérer les données du formulaire
+                const formData = new FormData(form);
+
+                // 1?? Première requête POST -> /users (nom, phone)
+                const userFormData = new FormData();
+                userFormData.append('nom', formData.get('nom'));
+                userFormData.append('phone', formData.get('phone'));
+
+                const userResponse = await fetch('users', {
+                    method: 'POST',
+                    body: userFormData
+                });
+
+                if (!userResponse.ok) {
+                    const errorText = await userResponse.text();
+                    throw new Error(`Erreur lors de l'enregistrement de l'utilisateur: ${userResponse.status} - ${errorText}`);
+                }
+
+                const userData = await userResponse.json();
+
+                // Mettre à jour la valeur du champ caché 'user_id' du formulaire
+                if (userData.id) {
+                    const userIdInput = document.getElementById('user_id');
+                    if (userIdInput) {
+                        userIdInput.value = userData.id;
+                    }
+                }
+
+                // 2?? Deuxième requête POST -> /reviews (tous les champs du formulaire, y compris le user_id mis à jour)
+                // On recrée un FormData pour s'assurer que les données sont à jour
+                const reviewFormData = new FormData(form);
+
+                // Ajouter manuellement la date au `FormData`
+                reviewFormData.append('dateVisite', new Date().toISOString());
+
+                // Suppression du nom et du téléphone du `FormData` de la deuxième requête
+                reviewFormData.delete('nom');
+                reviewFormData.delete('phone');
+
+                const reviewResponse = await fetch('reviews', {
+                    method: 'POST',
+                    body: reviewFormData
+                });
+
+                if (!reviewResponse.ok) {
+                    const errorText = await reviewResponse.text();
+                    throw new Error(`Erreur lors de l'enregistrement de la review: ${reviewResponse.status} - ${errorText}`);
+                }
+
+                alert("Avis envoyé avec succès !");
+                form.reset();
+            } catch (err) {
+                console.error(err);
+                alert("Une erreur est survenue : " + err.message);
+            } finally {
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right: 8px;"></i> Envoyer mon avis';
+                submitBtn.disabled = false;
+            }
+        });
     }
 
-    // View switching
-    function showView(view) {
-      const formView = document.getElementById('form-view');
-      const opinionsView = document.getElementById('opinions-view');
-      const navItems = document.querySelectorAll('.nav-item');
-
-      // Hide all views
-      formView.classList.remove('active');
-      opinionsView.classList.remove('active');
-
-      // Remove active from nav items
-      navItems.forEach(item => item.classList.remove('active'));
-
-      // Show selected view
-      if (view === 'form') {
-        formView.classList.add('active');
-        navItems[0].classList.add('active');
-      } else {
-        opinionsView.classList.add('active');
-        navItems[1].classList.add('active');
-      }
-    }
-
-    // Form enhancements
-    document.addEventListener('DOMContentLoaded', function() {
-      createParticles();
-
-      // Set the current date for the hidden input field
-      document.getElementById('dateVisite').value = new Date().toISOString().split('T')[0];
-
-
-      // Add focus effects to inputs
-      const inputs = document.querySelectorAll('.form-input');
-      inputs.forEach(input => {
-        input.addEventListener('focus', function() {
-          this.parentElement.style.transform = 'translateY(-2px)';
-        });
-
-        input.addEventListener('blur', function() {
-          this.parentElement.style.transform = 'translateY(0)';
-        });
-      });
-
-      // Add submit animation
-      const submitBtn = document.querySelector('.submit-btn');
-      const form = document.querySelector('form');
-      
-      if (form) {
-        form.addEventListener('submit', function(e) {
-          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
-          submitBtn.disabled = true;
-        });
-      }
-
-      // Add staggered animation to opinion cards
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      };
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => {
-              entry.target.style.animationPlayState = 'running';
-            }, index * 100);
-          }
-        });
-      }, observerOptions);
-
-      document.querySelectorAll('.opinion-card').forEach(card => {
-        observer.observe(card);
-      });
-    });
-
-    // Add typing effect for form title
-    function typeWriter(element, text, speed = 50) {
-      let i = 0;
-      element.innerHTML = '';
-      function type() {
-        if (i < text.length) {
-          element.innerHTML += text.charAt(i);
-          i++;
-          setTimeout(type, speed);
-        }
-      }
-      type();
-    }
-
-    // Smooth scroll for navigation
-    document.querySelectorAll('.nav-item').forEach(item => {
-      item.addEventListener('click', function() {
-        this.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-          this.style.transform = '';
-        }, 150);
-      });
-    });
-  </script>
 </body>
 </html>

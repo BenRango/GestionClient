@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -573,15 +573,15 @@
     <div class="particles"></div>
 
     <nav class="nav">
-    <!-- <button class="nav-item active" onclick="showView('form')">
-      <i class="fas fa-edit"></i>
-      Nouvel Avis
-    </button> -->
-    <button class="nav-item" onclick="showView('opinions')">
-      <i class="fas fa-comments"></i>
-      <a href="reviews" class="nav-item">Voir les Avis</a>
-    </button>
-  </nav>
+        <!-- <button class="nav-item active" onclick="showView('form')">
+          <i class="fas fa-edit"></i>
+          Nouvel Avis
+        </button> -->
+        <button class="nav-item" onclick="showView('opinions')">
+          <i class="fas fa-comments"></i>
+          <a href="reviews" class="nav-item">Voir les Avis</a>
+        </button>
+    </nav>
 
     <div id="form-view" class="view-section active">
     <div class="container">
@@ -591,8 +591,8 @@
             <div class="form-icon">
               <i class="fas fa-star"></i>
             </div>
-            <h1 class="form-title">Partagez votre exp rience</h1>
-            <p class="form-subtitle">Votre avis nous aide   am liorer nos services</p>
+            <h1 class="form-title">Partagez votre expérience</h1>
+            <p class="form-subtitle">Votre avis nous aident à améliorer nos services</p>
           </div>
 
           <form action="reviews55" method="post" id="review-form">
@@ -627,7 +627,7 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="commentaire">Commentaire d�taill� </label>
+              <label class="form-label" for="commentaire">Commentaire détaillé </label>
               <textarea 
                 id="commentaire" 
                 name="commentaire" 
@@ -637,7 +637,7 @@
               ></textarea>
             </div>
             <div class="form-group">
-              <label class="form-label" for="service">Service concern� </label>
+              <label class="form-label" for="service">Service concerné </label>
               <input 
                 type="text" 
                 id="service" 
@@ -648,14 +648,13 @@
               >
             </div>
             <div class="form-group">
-              <label class="form-label" for="phone">Num�ro de t�l�phone </label>
+              <label class="form-label" for="phone">Numéro de téléphone </label>
               <input 
                 type="text" 
                 id="phone" 
                 name="phone" 
                 class="form-input" 
                 placeholder="Ex: 0123456789"
-                required
               >
             </div>
             <div class="form-group">
@@ -666,7 +665,6 @@
                 name="nom" 
                 class="form-input" 
                 placeholder="Votre nom..."
-                required
               >
             </div>
 
@@ -679,14 +677,13 @@
       </div>
     </div>
   </div>
-  </div>
-  <script> 
+    </div>
+    <script> 
     document.addEventListener('DOMContentLoaded', function() {
       const form = document.getElementById('review-form');
 
-      // 👉 Initialiser la date de visite directement dans l'input caché
       const dateInput = document.getElementById('dateVisite');
-      dateInput.value = new Date().toISOString().split('T')[0];
+      dateInput.value = new Date().toISOString().replace("T", " ").split(".")[0];
 
       if (form) {
         form.addEventListener('submit', async function(e) {
@@ -699,10 +696,9 @@
           try {
             const formData = new FormData(form);
 
-            // 1️⃣ POST -> /users
             const userFormData = new FormData();
-            userFormData.append('nom', formData.get('nom'));
-            userFormData.append('phone', formData.get('phone'));
+            userFormData.append('nom', formData.get('nom') || "Anonyme");
+            userFormData.append('phone', formData.get('phone')|| "Anonyme");
 
             console.log("Données envoyées à /users :", Object.fromEntries(userFormData));
 
@@ -722,7 +718,7 @@
               document.getElementById('user_id').value = userData.id;
             }
 
-            // 2️⃣ POST -> /reviews
+            // 2?? POST -> /reviews
             const reviewFormData = new FormData(form);
             reviewFormData.delete('nom');
             reviewFormData.delete('phone');

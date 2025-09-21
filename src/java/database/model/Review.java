@@ -73,6 +73,7 @@ public class Review {
 
     public String getSatisfaction() {
         return Satisfaction;
+        
     }
 
     public void setSatisfaction(String Satisfaction) {

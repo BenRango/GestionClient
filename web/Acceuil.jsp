@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -573,15 +573,15 @@
     <div class="particles"></div>
 
     <nav class="nav">
-    <!-- <button class="nav-item active" onclick="showView('form')">
-      <i class="fas fa-edit"></i>
-      Nouvel Avis
-    </button> -->
-    <button class="nav-item" onclick="showView('opinions')">
-      <i class="fas fa-comments"></i>
-      <a href="reviews" class="nav-item">Voir les Avis</a>
-    </button>
-  </nav>
+        <!-- <button class="nav-item active" onclick="showView('form')">
+          <i class="fas fa-edit"></i>
+          Nouvel Avis
+        </button> -->
+        <button class="nav-item" onclick="showView('opinions')">
+          <i class="fas fa-comments"></i>
+          <a href="reviews" class="nav-item">Voir les Avis</a>
+        </button>
+    </nav>
 
     <div id="form-view" class="view-section active">
     <div class="container">
@@ -591,11 +591,11 @@
             <div class="form-icon">
               <i class="fas fa-star"></i>
             </div>
-            <h1 class="form-title">Partagez votre exp rience</h1>
-            <p class="form-subtitle">Votre avis nous aide   am liorer nos services</p>
+            <h1 class="form-title">Partagez votre expÃ©rience</h1>
+            <p class="form-subtitle">Votre avis nous aident Ã  amÃ©liorer nos services</p>
           </div>
 
-          <form action="reviews" method="post" id="review-form">
+          <form action="reviews55" method="post" id="review-form">
                         <input type="hidden" id="user_id" name="user_id" value="1">
             <input type="hidden" id="dateVisite" name="dateVisite">
 
@@ -627,7 +627,7 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="commentaire">Commentaire détaillé </label>
+              <label class="form-label" for="commentaire">Commentaire dÃ©taillÃ© </label>
               <textarea 
                 id="commentaire" 
                 name="commentaire" 
@@ -637,7 +637,7 @@
               ></textarea>
             </div>
             <div class="form-group">
-              <label class="form-label" for="service">Service concerné </label>
+              <label class="form-label" for="service">Service concernÃ© </label>
               <input 
                 type="text" 
                 id="service" 
@@ -648,14 +648,13 @@
               >
             </div>
             <div class="form-group">
-              <label class="form-label" for="phone">Numéro de téléphone </label>
+              <label class="form-label" for="phone">NumÃ©ro de tÃ©lÃ©phone </label>
               <input 
                 type="text" 
                 id="phone" 
                 name="phone" 
                 class="form-input" 
                 placeholder="Ex: 0123456789"
-                required
               >
             </div>
             <div class="form-group">
@@ -666,7 +665,6 @@
                 name="nom" 
                 class="form-input" 
                 placeholder="Votre nom..."
-                required
               >
             </div>
 
@@ -679,80 +677,81 @@
       </div>
     </div>
   </div>
-  </div>
+    </div>
+    <script> 
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('review-form');
 
-    if (form) {
+      const dateInput = document.getElementById('dateVisite');
+      dateInput.value = new Date().toISOString().replace("T", " ").split(".")[0];
+
+      if (form) {
         form.addEventListener('submit', async function(e) {
-            e.preventDefault();
+          e.preventDefault();
 
-            // Récupérer le bouton de soumission pour le feedback visuel
-            const submitBtn = document.querySelector('.submit-btn');
+          const submitBtn = document.querySelector('.submit-btn');
+          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
+          submitBtn.disabled = true;
 
-            // Préparer le feedback visuel
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
-            submitBtn.disabled = true;
+          try {
+            const formData = new FormData(form);
 
-            try {
-                // Récupérer les données du formulaire
-                const formData = new FormData(form);
+            const userFormData = new FormData();
+            userFormData.append('nom', formData.get('nom') || "Anonyme");
+            userFormData.append('phone', formData.get('phone')|| "Anonyme");
 
-                // 1?? Première requête POST -> /users (nom, phone)
-                const userFormData = new FormData();
-                userFormData.append('nom', formData.get('nom'));
-                userFormData.append('phone', formData.get('phone'));
+            console.log("DonnÃ©es envoyÃ©es Ã  /users :", Object.fromEntries(userFormData));
 
-                const userResponse = await fetch('users', {
-                    method: 'POST',
-                    body: userFormData
-                });
+            const userResponse = await fetch('users', {
+              method: 'POST',
+              body: userFormData
+            });
 
-                if (!userResponse.ok) {
-                    const errorText = await userResponse.text();
-                    throw new Error(`Erreur lors de l'enregistrement de l'utilisateur: ${userResponse.status} - ${errorText}`);
-                }
-
-                const userData = await userResponse.json();
-
-                // Mettre à jour la valeur du champ caché 'user_id' du formulaire
-                if (userData.id) {
-                    const userIdInput = document.getElementById('user_id');
-                    if (userIdInput) {
-                        userIdInput.value = userData.id;
-                    }
-                }
-
-                // 2?? Deuxième requête POST -> /reviews (tous les champs du formulaire, y compris le user_id mis à jour)
-                // On recrée un FormData pour s'assurer que les données sont à jour
-                const reviewFormData = new FormData(form);
-
-                // Ajouter manuellement la date au `FormData`
-                reviewFormData.append('dateVisite', new Date().toISOString());
-
-                // Suppression du nom et du téléphone du `FormData` de la deuxième requête
-                reviewFormData.delete('nom');
-                reviewFormData.delete('phone');
-
-                const reviewResponse = await fetch('reviews', {
-                    method: 'POST',
-                    body: reviewFormData
-                });
-
-                if (!reviewResponse.ok) {
-                    const errorText = await reviewResponse.text();
-                    throw new Error(`Erreur lors de l'enregistrement de la review: ${reviewResponse.status} - ${errorText}`);
-                }
-
-                alert("Avis envoyé avec succès !");
-                form.reset();
-            } catch (err) {
-                console.error(err);
-                alert("Une erreur est survenue : " + err.message);
-            } finally {
-                submitBtn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right: 8px;"></i> Envoyer mon avis';
-                submitBtn.disabled = false;
+            if (!userResponse.ok) {
+              const errorText = await userResponse.text();
+              throw new Error(`Erreur lors de l'enregistrement de l'utilisateur: ${userResponse.status} - ${errorText}`);
             }
+
+            const userData = await userResponse.json();
+
+            if (userData.id) {
+              document.getElementById('user_id').value = userData.id;
+            }
+
+            // 2?? POST -> /reviews
+            const reviewFormData = new FormData(form);
+            reviewFormData.delete('nom');
+            reviewFormData.delete('phone');
+
+            console.log("DonnÃ©es envoyÃ©es Ã  /reviews :", Object.fromEntries(reviewFormData));
+
+            const reviewResponse = await fetch('reviews', {
+              method: 'POST',
+              body: reviewFormData
+            });
+
+            if (!reviewResponse.ok) {
+              const errorText = await reviewResponse.text();
+              throw new Error(`Erreur lors de l'enregistrement de la review: ${reviewResponse.status} - ${errorText}`);
+            }
+
+            alert("Avis envoyÃ© avec succÃ¨s !");
+            form.reset();
+
+            // RÃ©initialiser la date aprÃ¨s reset
+            dateInput.value = new Date().toISOString().split('T')[0];
+          } catch (err) {
+            console.error(err);
+            alert("Une erreur est survenue : " + err.message);
+          } finally {
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right: 8px;"></i> Envoyer mon avis';
+            submitBtn.disabled = false;
+          }
         });
-    }
+      }
+    });
+  </script>
+
 
 </body>
 </html>

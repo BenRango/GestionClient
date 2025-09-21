@@ -15,13 +15,13 @@ import javax.servlet.http.*;
  */
 
 
-@WebServlet(name = "MultiplicationServlet", urlPatterns = {"/"})
+@WebServlet(name = "RouteTohome", urlPatterns = {"/"})
 public class Class1 extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        request.setCharacterEncoding("UTF-8");
         RequestDispatcher dispatcher = request.getRequestDispatcher("Acceuil.jsp");
         dispatcher.forward(request, response);
     }

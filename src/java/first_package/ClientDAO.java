@@ -48,7 +48,6 @@ public class ClientDAO extends HttpServlet {
                             try (ResultSet userRs = userStmt.executeQuery()) {
                                 if (userRs.next()) {
                                     int userId = userRs.getInt("ID");
-                                    // Here, instead of a redirect, you should return the ID in a JSON response
                                     response.setContentType("application/json");
                                     response.setCharacterEncoding("UTF-8");
                                     response.getWriter().write("{\"id\": " + userId + "}");
@@ -60,7 +59,6 @@ public class ClientDAO extends HttpServlet {
                 }
             }
 
-            // If user doesn't exist, proceed with insertion
             String insertSql = "INSERT INTO User (first_name, last_name, Contact) VALUES (?, ?, ?)";
             try (PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
                 insertStmt.setString(1, firstName);
